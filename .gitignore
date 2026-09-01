@@ -1,7 +1,15 @@
-# agent scaffolding — local only, don't push
-CLAUDE.md
-AGENTS.md
-docs/agents/
-.scratch/
-CONTEXT.md
-CONTEXT-MAP.md
+# build output
+dist/
+# dependencies
+node_modules/
+# logs
+npm-debug.log*
+# environment
+.env
+.env.production
+# macOS
+.DS_Store
+# astro
+.astro/
+# wrangler
+.wrangler/

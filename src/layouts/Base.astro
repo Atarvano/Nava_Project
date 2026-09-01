@@ -1,0 +1,119 @@
+---
+import { contactChannels } from '../data/contact';
+import { resolveT } from '../utils/i18n';
+import { ogLocale, withLocale, type Locale } from '../i18n/index';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: Locale;
+  ogImage?: string;
+}
+const { title, description: rawDescription, lang = 'id', ogImage } = Astro.props;
+const t = resolveT(lang);
+const description = rawDescription ?? `${t.site.name} - ${t.site.tagline}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const locale = ogLocale(lang);
+const toggleTo: Locale = lang === 'id' ? 'en' : 'id';
+const currentPath = Astro.url.pathname;
+const toggleHref = (() => {
+  if (lang === 'id') return withLocale(currentPath, 'en');
+  // lang === 'en': /en, /en/team, /en/portfolio/slug -> /, /team, /portfolio/slug
+  const stripped = currentPath.replace(/^\/en\/?/, '/');
+  return stripped === '' ? '/' : stripped;
+})();
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" /></noscript>
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={t.site.name} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:locale" content={locale} />
+  {ogImage && <meta property="og:image" content={ogImage} />}
+  <meta name="twitter:card" content="summary_large_image" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href={withLocale('/', lang)} class="brand">{t.site.name}</a>
+      <nav class="site-nav" aria-label="Primary">
+        <ul>
+          <li><a href={withLocale('/', lang)}>{t.nav.home}</a></li>
+          <li><a href={withLocale('/about', lang)}>{t.nav.about}</a></li>
+          <li><a href={withLocale('/team', lang)}>{t.nav.team}</a></li>
+          <li><a href={withLocale('/service', lang)}>{t.nav.service}</a></li>
+          <li><a href={withLocale('/portfolio', lang)}>{t.nav.portfolio}</a></li>
+          <li><a href={withLocale('/contact', lang)}>{t.nav.contact}</a></li>
+          <li><a class="lang-toggle" href={toggleHref} aria-label={`Switch to ${toggleTo.toUpperCase()}`}>{toggleTo.toUpperCase()}</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <slot />
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-brand">{t.site.name}</p>
+      <p class="footer-tagline">{t.site.tagline}</p>
+      <nav class="footer-social" aria-label="Social">
+        {contactChannels.map((c) => (
+          <a href={c.href} rel="noopener">{c.label}</a>
+        ))}
+      </nav>
+      <p class="footer-copy">&copy; {new Date().getFullYear()} {t.site.name} · Batam</p>
+    </div>
+  </footer>
+  <script>
+    // Scroll reveals - IntersectionObserver, GPU-safe (transform+opacity only).
+    const reveal = document.querySelectorAll('.reveal');
+    if (reveal.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-revealed');
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      reveal.forEach((el) => io.observe(el));
+    } else {
+      reveal.forEach((el) => el.classList.add('is-revealed'));
+    }
+    // Persist lang toggle: remember last locale choice, offer redirect on mismatched ID default.
+    (() => {
+      try {
+        const KEY = 'nava-lang';
+        const hereLang = document.documentElement.lang as 'id'|'en';
+        const stored = localStorage.getItem(KEY) as 'id'|'en'|null;
+        localStorage.setItem(KEY, hereLang);
+        if (stored && stored !== hereLang) {
+          const path = location.pathname;
+          const isEn = path.startsWith('/en');
+          if (stored === 'en' && !isEn) {
+            const target = path === '/' ? '/en' : `/en${path}`;
+            if (target !== path) console.debug('[i18n] stored EN, current ID', { target });
+          }
+        }
+      } catch {}
+    })();
+  </script>
+</body>
+</html>

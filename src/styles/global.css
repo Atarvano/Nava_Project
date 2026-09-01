@@ -1,0 +1,184 @@
+/* NAVA CREATIVE — editorial-luxury tokens (ADR-0004)
+ * Palette tuned from Canva #ff0000 / #000000 / #ffffff.
+ * No AI-purple, no beige+brass premium-consumer family (design-taste).
+ */
+
+:root {
+  /* ink / bone / crimson — true monochrome + one saturated accent */
+  --ink: #0d0c0b;            /* off-black, not #000 */
+  --ink-soft: #2a2926;
+  --bone: #f6f5f2;           /* off-white, not #fff */
+  --bone-deep: #ebe9e4;
+  --crimson: #c91512;        /* tuned red, not #ff0000 */
+  --crimson-soft: #e8b4b2;
+  --muted: #6f6d68;
+
+  /* type — ADR-0004: Poppins display, Plus Jakarta Sans body */
+  --font-display: 'Poppins', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  /* scale — clamped from Canva 142px token (ADR-0004) */
+  --step--1: clamp(0.75rem, 0.71rem + 0.2vw, 0.9375rem);
+  --step-0: clamp(1rem, 0.95rem + 0.4vw, 1.25rem);
+  --step-1: clamp(1.35rem, 1.18rem + 1.1vw, 2rem);
+  --step-2: clamp(1.8rem, 1.45rem + 2.2vw, 3rem);
+  --step-3: clamp(2.4rem, 1.7rem + 4.2vw, 5rem);
+  --step-4: clamp(3rem, 1.85rem + 7vw, 8.875rem);    /* 142px @ desktop */
+
+  /* rhythm */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 2rem;
+  --space-4: 4rem;
+  --space-5: 7rem;
+  --space-6: 10rem;
+  --section-pad: clamp(4rem, 6vw + 2rem, 9rem);
+
+  /* radius — one system: pill for interactive, 2px for cards */
+  --radius-pill: 999px;
+  --radius-card: 2px;
+
+  /* motion — custom cubic-bezier, never default ease */
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-inout: cubic-bezier(0.83, 0, 0.17, 1);
+  --dur: 0.7s;
+  --dur-fast: 0.35s;
+
+  /* grid */
+  --container: min(100% - 2rem, 96rem);
+}
+
+/* ---- reset-ish ---- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: auto; }
+body {
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--bone);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; }
+
+/* ---- layout ---- */
+.container { width: var(--container); margin-inline: auto; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-3);
+}
+
+/* ---- header (floating pill, not edge-glued; nav one line, ≤80px) ---- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+  background: color-mix(in srgb, var(--bone) 82%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+}
+.brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  font-size: var(--step--1);
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+}
+.site-nav ul {
+  display: flex;
+  list-style: none;
+  gap: 0.25rem;
+  flex-wrap: nowrap;
+}
+.site-nav a {
+  font-size: var(--step--1);
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--radius-pill);
+  transition: background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.site-nav a:hover { background: var(--ink); color: var(--bone); }
+@media (max-width: 768px) {
+  .site-nav ul { gap: 0; }
+  .site-nav a { padding: 0.5rem 0.5rem; font-size: 0.8rem; }
+}
+
+/* ---- footer ---- */
+.site-footer {
+  background: var(--ink);
+  color: var(--bone);
+  padding: var(--section-pad) 0 var(--space-3);
+  margin-top: var(--space-6);
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+}
+.footer-brand { grid-column: span 6; font-family: var(--font-display); font-size: var(--step-3); letter-spacing: 0.06em; }
+.footer-tagline { grid-column: span 6; color: color-mix(in srgb, var(--bone) 60%, transparent); font-size: var(--step--1); max-width: 40ch; }
+.footer-social { grid-column: span 6; display: flex; gap: var(--space-2); }
+.footer-social a {
+  border: 1px solid color-mix(in srgb, var(--bone) 30%, transparent);
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1rem;
+  font-size: var(--step--1);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.footer-social a:hover { background: var(--crimson); border-color: var(--crimson); }
+.footer-copy { grid-column: span 12; color: color-mix(in srgb, var(--bone) 50%, transparent); font-size: var(--step--1); border-top: 1px solid color-mix(in srgb, var(--bone) 15%, transparent); padding-top: var(--space-2); margin-top: var(--space-2); }
+@media (max-width: 768px) {
+  .footer-inner { grid-template-columns: 1fr; }
+  .footer-brand, .footer-tagline, .footer-social, .footer-copy { grid-column: span 1; }
+}
+
+/* ---- motion primitives ---- */
+/* scroll reveal — set is-revealed via IntersectionObserver in Base */
+.reveal {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+}
+.reveal.is-revealed { opacity: 1; transform: none; }
+
+/* image hover lift */
+.hover-lift { transition: transform var(--dur-fast) var(--ease-out); }
+.hover-lift:hover { transform: translateY(-0.4rem); }
+
+/* parallax hero — CSS scroll-driven animation (no scroll listener).
+ * view() timeline is browser-native; guarded by @supports for Firefox/Safari
+ * (no animation-timeline) so keyframes never run unfilled.
+ * ponytail: scroll-driven animation, swap to IO+JS only if coverage gaps appear
+ */
+@supports (animation-timeline: view()) {
+  .hero-parallax {
+    animation: hero-drift linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 80%;
+    scale: 1.08; /* reserve bleed so drift never shows edges */
+  }
+  @keyframes hero-drift {
+    from { transform: translateY(6%); }
+    to { transform: translateY(-6%); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .hero-parallax { animation: none; scale: 1; }
+  .hover-lift, .hero-parallax { transform: none; transition: none; }
+}

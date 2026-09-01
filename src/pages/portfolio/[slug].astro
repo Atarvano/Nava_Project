@@ -1,0 +1,104 @@
+---
+import Base from '../../layouts/Base.astro';
+import { portfolio } from '../../data/portfolio';
+import { resolveT } from '../../utils/i18n';
+import { Image } from 'astro:assets';
+import type { GetStaticPaths } from 'astro';
+
+const _lang = 'id' as const;
+const t = resolveT(_lang);
+
+export const getStaticPaths = (() =>
+  portfolio.map((item, i) => ({
+    params: { slug: item.slug },
+    props: {
+      item,
+      prev: portfolio[(i - 1 + portfolio.length) % portfolio.length],
+      next: portfolio[(i + 1) % portfolio.length],
+    },
+  }))) satisfies GetStaticPaths;
+
+const { item, prev, next } = Astro.props;
+const metaParts = [item.meta?.date, item.meta?.location].filter(Boolean).join(' · ');
+const ogImage = new URL(item.cover.src, Astro.site).href;
+---
+<Base lang="id" title={`${item.title} - ${t.site.name}`} ogImage={ogImage} description={`${item.tags[0] ?? item.category} - ${item.title}`}>
+  <article class="detail container">
+    <header class="detail-head">
+      <div class="detail-grid">
+        <div class="detail-copy reveal">
+          <p class="kicker">{item.category}</p>
+          <h1>{item.title}</h1>
+          {item.tags.length > 0 && <p class="tags">{item.tags.join(' / ')}</p>}
+          {metaParts && <p class="meta">{metaParts}</p>}
+        </div>
+      </div>
+    </header>
+    <div class="detail-media">
+      <figure class="hover-lift">
+        <Image
+          src={item.cover}
+          alt={item.title}
+          widths={[640, 1280, 1920]}
+          sizes="(max-width: 768px) 100vw, 70vw"
+          loading="lazy"
+          format="webp"
+        />
+      </figure>
+    </div>
+    <nav class="nextprev" aria-label="next prev">
+      <a href={`/portfolio/${prev.slug}/`} class="np prev hover-lift">
+        <span class="np-label">{t.portfolio.prev}</span>
+        <span class="np-title">{prev.title}</span>
+      </a>
+      <a href={`/portfolio/${next.slug}/`} class="np next hover-lift">
+        <span class="np-label">{t.portfolio.next}</span>
+        <span class="np-title">{next.title}</span>
+      </a>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .detail { padding-top: var(--space-5); padding-bottom: var(--section-pad); }
+  .detail-grid { display: grid; grid-template-columns: repeat(12, 1fr); }
+  .detail-copy { grid-column: span 8; }
+  .kicker {
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--crimson);
+    margin-bottom: var(--space-1);
+  }
+  h1 { font-size: var(--step-3); text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: var(--space-2); }
+  .tags { font-size: var(--step--1); color: var(--muted); }
+  .meta { font-size: var(--step--1); color: var(--muted); margin-top: 0.2rem; }
+  .detail-media { margin-top: var(--space-4); display: grid; gap: var(--space-3); }
+  figure { overflow: hidden; border-radius: var(--radius-card); }
+  .placeholder {
+    aspect-ratio: 3 / 2;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--ink) 6%, var(--bone));
+    border: 1px dashed color-mix(in srgb, var(--ink) 25%, transparent);
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  .nextprev {
+    margin-top: var(--space-5);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+    padding-top: var(--space-3);
+  }
+  .np { display: flex; flex-direction: column; gap: 0.2rem; padding: var(--space-2); }
+  .np.next { text-align: right; align-items: flex-end; }
+  .np-label { font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); }
+  .np-title { font-family: var(--font-display); font-size: var(--step-1); font-weight: 600; }
+  .np:hover .np-title { color: var(--crimson); }
+  @media (max-width: 768px) {
+    .detail-copy { grid-column: span 12; }
+    .nextprev { grid-template-columns: 1fr; }
+  }
+</style>

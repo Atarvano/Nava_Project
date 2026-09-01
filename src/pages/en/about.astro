@@ -1,0 +1,41 @@
+---
+import Base from '../../layouts/Base.astro';
+import { resolveT } from '../../utils/i18n';
+const t = resolveT('en');
+---
+<Base lang="en" title={`About - ${t.site.name}`}>
+  <section class="about-hero container">
+    <div class="about-grid">
+      <div class="about-copy">
+        <h1 class="reveal">{t.site.name}</h1>
+        <p class="reveal lead">{t.about.blurb}</p>
+      </div>
+      <div class="about-tagline reveal">
+        <p>{t.site.tagline}</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .about-hero { padding-top: var(--space-5); padding-bottom: var(--section-pad); }
+  .about-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-3); align-items: end; }
+  .about-copy { grid-column: span 8; }
+  .about-tagline { grid-column: span 4; }
+  h1 { font-size: var(--step-3); text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: var(--space-3); }
+  .lead {
+    font-size: var(--step-1);
+    max-width: 48ch;
+    color: var(--ink-soft);
+  }
+  .about-tagline p {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 600;
+    color: var(--crimson);
+    line-height: 1.2;
+  }
+  @media (max-width: 768px) {
+    .about-copy, .about-tagline { grid-column: span 12; }
+  }
+</style>
