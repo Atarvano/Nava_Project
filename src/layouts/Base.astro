@@ -1,0 +1,62 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  lang?: 'id' | 'en';
+  ogImage?: string;
+}
+const { title, description = 'Nava Creative — Studio kreatif Batam', lang = 'id', ogImage } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const locale = lang === 'id' ? 'id_ID' : 'en_US';
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <!-- Fonts: Poppins (display) + Plus Jakarta Sans (body) — ADR-0004 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" /></noscript>
+  <!-- OG defaults (ADR-0001, spec 18-19) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Nava Creative" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:locale" content={locale} />
+  {ogImage && <meta property="og:image" content={ogImage} />}
+  <meta name="twitter:card" content="summary_large_image" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="brand">NAVA CREATIVE</a>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/team">Team</a></li>
+        <li><a href="/service">Service</a></li>
+        <li><a href="/portfolio">Portfolio</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <slot />
+  </main>
+  <footer>
+    <p>&copy; Nava Creative — Batam</p>
+    <p>
+      <a href="https://wa.me/6285817999140" rel="noopener">WhatsApp</a> ·
+      <a href="mailto:navaproduction9@gmail.com">Email</a> ·
+      <a href="https://instagram.com/navacreative.btm" rel="noopener">Instagram</a>
+    </p>
+  </footer>
+</body>
+</html>

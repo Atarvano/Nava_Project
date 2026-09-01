@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nava-creative.pages.dev/sitemap.xml

@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro';
+import { portfolio } from '../../data/portfolio';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (() =>
+  portfolio.map((item) => ({ params: { slug: item.slug }, props: { item } }))) satisfies GetStaticPaths;
+
+const { item } = Astro.props;
+---
+<Base title={`${item.title} — Nava Creative`}>
+  <h1>{item.title}</h1>
+  <p>Category: {item.category}</p>
+  <p>Shell placeholder — images and meta land in #3–#5.</p>
+</Base>
