@@ -1,11 +1,14 @@
 ---
+import { contactChannels } from '../data/contact';
+import { t } from '../data/i18n/id';
+
 interface Props {
   title: string;
   description?: string;
   lang?: 'id' | 'en';
   ogImage?: string;
 }
-const { title, description = 'Nava Creative — Studio kreatif Batam', lang = 'id', ogImage } = Astro.props;
+const { title, description = `${t.site.name} — ${t.site.tagline}`, lang = 'id', ogImage } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const locale = lang === 'id' ? 'id_ID' : 'en_US';
 ---
@@ -18,14 +21,12 @@ const locale = lang === 'id' ? 'id_ID' : 'en_US';
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
-  <!-- Fonts: Poppins (display) + Plus Jakarta Sans (body) — ADR-0004 -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" /></noscript>
-  <!-- OG defaults (ADR-0001, spec 18-19) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Nava Creative" />
+  <meta property="og:site_name" content={t.site.name} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
@@ -36,14 +37,14 @@ const locale = lang === 'id' ? 'id_ID' : 'en_US';
 <body>
   <header>
     <nav>
-      <a href="/" class="brand">NAVA CREATIVE</a>
+      <a href="/" class="brand">{t.site.name}</a>
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/team">Team</a></li>
-        <li><a href="/service">Service</a></li>
-        <li><a href="/portfolio">Portfolio</a></li>
-        <li><a href="/contact">Contact</a></li>
+        <li><a href="/">{t.nav.home}</a></li>
+        <li><a href="/about">{t.nav.about}</a></li>
+        <li><a href="/team">{t.nav.team}</a></li>
+        <li><a href="/service">{t.nav.service}</a></li>
+        <li><a href="/portfolio">{t.nav.portfolio}</a></li>
+        <li><a href="/contact">{t.nav.contact}</a></li>
       </ul>
     </nav>
   </header>
@@ -51,11 +52,11 @@ const locale = lang === 'id' ? 'id_ID' : 'en_US';
     <slot />
   </main>
   <footer>
-    <p>&copy; Nava Creative — Batam</p>
+    <p>&copy; {t.site.name} — Batam</p>
     <p>
-      <a href="https://wa.me/6285817999140" rel="noopener">WhatsApp</a> ·
-      <a href="mailto:navaproduction9@gmail.com">Email</a> ·
-      <a href="https://instagram.com/navacreative.btm" rel="noopener">Instagram</a>
+      {contactChannels.map((c, i) => (
+        <><a href={c.href} rel="noopener">{c.label}</a>{i < contactChannels.length - 1 && ' · '}</>
+      ))}
     </p>
   </footer>
 </body>

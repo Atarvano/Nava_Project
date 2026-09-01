@@ -1,4 +1,4 @@
-// Portfolio data — #3 fills real content from research; #2 needs a stub for getStaticPaths.
+// Portfolio Item — CONTEXT glossary. #5 fills real images; placeholders keep grid honest.
 export interface PortfolioItem {
   slug: string;
   title: string;
@@ -9,10 +9,48 @@ export interface PortfolioItem {
 }
 
 export const portfolio: PortfolioItem[] = [
-  { slug: 'ihsan-ochi', title: 'Ihsan & Ochi', category: 'prewedding', tags: [], images: [] },
-  { slug: 'banda-neira', title: 'Banda Neira', category: 'stage', tags: [], images: [] },
-  { slug: 'waii-merch', title: 'WAII Merch', category: 'product', tags: [], images: [] },
-  { slug: 'ams-akar-cup-ii', title: 'AMS AKAR CUP II', category: 'event', tags: [], images: [] },
-  { slug: 'milad-pwkt-kota-batam-ke-15', title: 'Milad PWKT Kota Batam Ke-15', category: 'event', tags: [], images: [] },
-  { slug: 'santunan', title: 'Santunan', category: 'social', tags: [], images: [] },
+  { slug: 'ihsan-ochi', title: 'Ihsan & Ochi', category: 'prewedding', tags: ['photo prewedding'], images: [] },
+  { slug: 'tittari', title: 'Tittari', category: 'prewedding', tags: ['photo prewedding'], images: [] },
+  { slug: 'banda-neira', title: 'Banda Neira', category: 'stage', tags: ['stage photography'], images: [] },
+  { slug: 'reels-video', title: 'Reels Video', category: 'reels', tags: ['Reels Video'], images: [] },
+  { slug: 'waii-merch', title: 'WAII Merch', category: 'product', tags: ['photo product'], images: [] },
+  { slug: 'double-g', title: 'Double G', category: 'product', tags: ['photo product'], images: [] },
+  { slug: 'tsenja', title: 'Tsenja', category: 'product', tags: ['photo product'], images: [] },
+  {
+    slug: 'santunan',
+    title: 'Santunan',
+    category: 'social',
+    tags: ['social media handling'],
+    images: [],
+    meta: { date: '2025-07-05', client: 'SRIKANDI & FORKOM SE-JATENG', location: 'Batam' },
+  },
+  {
+    slug: 'rissau',
+    title: 'RISSAU',
+    category: 'event',
+    tags: ['event photography'],
+    images: [],
+  },
+  {
+    slug: 'amsakar-cup-ii',
+    title: 'AMSAKAR CUP II SABA KARATE',
+    category: 'event',
+    tags: ['event photography'],
+    images: [],
+  },
+  {
+    slug: 'milad-pwkt-15',
+    title: 'Milad PWKT Kota Batam Ke-15',
+    category: 'event',
+    tags: ['event photography'],
+    images: [],
+    meta: { location: 'Batam' },
+  },
+  {
+    slug: 'photon-prewedding',
+    title: 'Ihsan & Pipit',
+    category: 'prewedding',
+    tags: ['photo prewedding'],
+    images: [],
+  },
 ];

@@ -1,7 +1,23 @@
 ---
 import Base from '../layouts/Base.astro';
+import { team } from '../data/team';
+import { t } from '../data/i18n/id';
 ---
-<Base title="Team — Nava Creative">
-  <h1>Team — Nava Creative</h1>
-  <p>Shell placeholder — content lands in #3–#4.</p>
+<Base title={`Team — ${t.site.name}`}>
+  <h1>{t.team.heading}</h1>
+  <ul>
+    {team.map((m) => (
+      <li>
+        <h2>{m.name}</h2>
+        <p>{m.roles.join('/')}</p>
+        <p>
+          Instagram: <a href={`https://instagram.com/${m.instagram}`} rel="noopener">@{m.instagram}</a>
+        </p>
+        {m.phones.length > 0 && <p>Phone: {m.phones.join(' / ')}</p>}
+        {m.experience.length > 0 && (
+          <p>{t.team.experienceLabel}: {m.experience.join(' / ')}</p>
+        )}
+      </li>
+    ))}
+  </ul>
 </Base>

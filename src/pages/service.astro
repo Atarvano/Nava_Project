@@ -1,7 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
+import { services } from '../data/services';
+import { t } from '../data/i18n/id';
 ---
-<Base title="Service — Nava Creative">
-  <h1>Service — Nava Creative</h1>
-  <p>Shell placeholder — content lands in #3–#4.</p>
+<Base title={`Service — ${t.site.name}`}>
+  <h1>{t.service.heading}</h1>
+  <ol>
+    {services.map((s) => (
+      <li>
+        <span>{s.number}</span> <a href={`/portfolio?category=${s.id}`}>{s.title}</a>
+      </li>
+    ))}
+  </ol>
 </Base>

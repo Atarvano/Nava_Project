@@ -1,7 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
+import { t } from '../data/i18n/id';
 ---
-<Base title="Nava Creative">
-  <h1>Nava Creative</h1>
-  <p>Shell placeholder — content lands in #3–#4.</p>
+<Base title={`${t.site.name} — ${t.site.tagline}`}>
+  <h1>{t.site.name}</h1>
+  <p>{t.site.tagline}</p>
+  <p>PORTFOLIO</p>
 </Base>

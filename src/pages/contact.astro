@@ -1,7 +1,30 @@
 ---
 import Base from '../layouts/Base.astro';
+import { contactChannels, contact } from '../data/contact';
+import { team } from '../data/team';
+import { t } from '../data/i18n/id';
 ---
-<Base title="Contact — Nava Creative">
-  <h1>Contact — Nava Creative</h1>
-  <p>Shell placeholder — content lands in #3–#4.</p>
+<Base title={`Contact — ${t.site.name}`}>
+  <h1>{t.contact.heading}</h1>
+  <ul>
+    {contactChannels.map((c) => (
+      <li><a href={c.href} rel="noopener">{c.label}</a></li>
+    ))}
+  </ul>
+  <section>
+    <p>{contact.instagramHandle}</p>
+    <p>{contact.email}</p>
+    <p>{contact.phoneDisplay}</p>
+  </section>
+  <section>
+    <h2>Makers</h2>
+    <ul>
+      {team.map((m) => (
+        <li>
+          {m.name} — <a href={`https://instagram.com/${m.instagram}`} rel="noopener">@{m.instagram}</a>
+          {m.phones.length > 0 && ` — ${m.phones.join(' / ')}`}
+        </li>
+      ))}
+    </ul>
+  </section>
 </Base>

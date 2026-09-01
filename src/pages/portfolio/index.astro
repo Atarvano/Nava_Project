@@ -1,7 +1,32 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { portfolio } from '../../data/portfolio';
+import { t } from '../../data/i18n/id';
+
+const categories = [...new Set(portfolio.map((p) => p.category))].sort();
 ---
-<Base title="Portfolio — Nava Creative">
-  <h1>Portfolio — Nava Creative</h1>
-  <p>Shell placeholder — content lands in #3–#4.</p>
+<Base title={`${t.portfolio.indexHeading} — ${t.site.name}`}>
+  <h1>{t.portfolio.indexHeading}</h1>
+  <nav aria-label="filter by category">
+    <button data-filter="all">{t.portfolio.filterAll}</button>
+    {categories.map((c) => <button data-filter={c}>{c}</button>)}
+  </nav>
+  <ul id="grid">
+    {portfolio.map((p) => (
+      <li data-category={p.category}>
+        <a href={`/portfolio/${p.slug}/`}>{p.title}</a> — {p.category}
+      </li>
+    ))}
+  </ul>
 </Base>
+<script>
+  const grid = document.getElementById('grid')!;
+  document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter!;
+      grid.querySelectorAll<HTMLElement>('[data-category]').forEach((li) => {
+        li.hidden = f !== 'all' && li.dataset.category !== f;
+      });
+    });
+  });
+</script>

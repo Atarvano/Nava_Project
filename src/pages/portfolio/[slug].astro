@@ -1,15 +1,35 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { portfolio } from '../../data/portfolio';
+import { t } from '../../data/i18n/id';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths = (() =>
-  portfolio.map((item) => ({ params: { slug: item.slug }, props: { item } }))) satisfies GetStaticPaths;
+  portfolio.map((item, i) => ({
+    params: { slug: item.slug },
+    props: {
+      item,
+      prev: portfolio[(i - 1 + portfolio.length) % portfolio.length],
+      next: portfolio[(i + 1) % portfolio.length],
+    },
+  }))) satisfies GetStaticPaths;
 
-const { item } = Astro.props;
+const { item, prev, next } = Astro.props;
 ---
-<Base title={`${item.title} — Nava Creative`}>
+<Base title={`${item.title} — ${t.site.name}`}>
   <h1>{item.title}</h1>
   <p>Category: {item.category}</p>
-  <p>Shell placeholder — images and meta land in #3–#5.</p>
+  {item.tags.length > 0 && <p>Tags: {item.tags.join(', ')}</p>}
+  {item.meta?.date && <p>{t.portfolio.metaDate}: {item.meta.date}</p>}
+  {item.meta?.client && <p>{t.portfolio.metaClient}: {item.meta.client}</p>}
+  {item.meta?.location && <p>{t.portfolio.metaLocation}: {item.meta.location}</p>}
+  {item.images.length === 0 ? (
+    <p>Images placeholder — #5 fills real assets.</p>
+  ) : (
+    <ul>{item.images.map((img) => <li><img src={img} alt={item.title} loading="lazy" /></li>)}</ul>
+  )}
+  <nav aria-label="next prev">
+    <a href={`/portfolio/${prev.slug}/`}>← {t.portfolio.prev}: {prev.title}</a>
+    <a href={`/portfolio/${next.slug}/`}>{t.portfolio.next}: {next.title} →</a>
+  </nav>
 </Base>
