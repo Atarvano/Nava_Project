@@ -18,6 +18,9 @@ export const t = {
     whatsapp: 'WhatsApp',
     email: 'Email',
     instagram: 'Instagram',
+    makers: 'Makers',
+    instagramLabel: 'Instagram',
+    phoneLabel: 'Phone',
   },
   portfolio: {
     indexHeading: 'Portfolio',
@@ -28,6 +31,7 @@ export const t = {
     metaDate: 'Tanggal',
     metaClient: 'Klien',
     metaLocation: 'Lokasi',
+    imagePlaceholder: 'Visual placeholder - real assets land later.',
   },
   team: { heading: 'Meet the Makers', experienceLabel: 'Experience' },
   service: { heading: 'Our service' },

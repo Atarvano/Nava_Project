@@ -1,9 +1,119 @@
 ---
 import Base from '../layouts/Base.astro';
 import { t } from '../data/i18n/id';
+import { services } from '../data/services';
+import { portfolio } from '../data/portfolio';
+const [word1, word2] = t.site.name.toUpperCase().split(' ');
 ---
-<Base title={`${t.site.name} — ${t.site.tagline}`}>
-  <h1>{t.site.name}</h1>
-  <p>{t.site.tagline}</p>
-  <p>PORTFOLIO</p>
+<Base title={`${t.site.name} - ${t.site.tagline}`}>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="hero-eyebrow reveal">{t.site.tagline}</p>
+          <h1 class="reveal">{word1}<span>{word2}</span></h1>
+          <p class="hero-sub reveal">{t.portfolio.indexHeading}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services container">
+    <h2 class="reveal">{t.service.heading}</h2>
+    <div class="services-grid">
+      {services.map((s) => (
+        <a href={`/portfolio?category=${s.id}`} class="service-card reveal hover-lift">
+          <span class="service-num">{s.number}</span>
+          <span class="service-title">{s.title}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="work container">
+    <h2 class="reveal">{t.portfolio.indexHeading}</h2>
+    <div class="work-grid">
+      {portfolio.slice(0, 4).map((p) => (
+        <a href={`/portfolio/${p.slug}/`} class="work-card reveal hover-lift">
+          <span class="work-title">{p.title}</span>
+          <span class="work-cat">{p.category}</span>
+        </a>
+      ))}
+    </div>
+  </section>
 </Base>
+
+<style>
+  .hero { padding-top: var(--space-5); padding-bottom: var(--section-pad); }
+  .hero-grid { display: grid; grid-template-columns: repeat(12, 1fr); }
+  .hero-copy { grid-column: 1 / -1; }
+  .hero-eyebrow {
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin-bottom: var(--space-2);
+  }
+  h1 {
+    font-size: var(--step-4);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  h1 span { display: block; color: var(--crimson); }
+  .hero-sub {
+    font-size: var(--step-1);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--crimson);
+    margin-top: var(--space-2);
+  }
+  .services { padding-top: var(--section-pad); }
+  .services h2, .work h2 {
+    font-size: var(--step-3);
+    margin-bottom: var(--space-4);
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: color-mix(in srgb, var(--ink) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  }
+  .service-card {
+    background: var(--bone);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .service-num { font-size: var(--step--1); color: var(--crimson); }
+  .service-title { font-family: var(--font-display); font-size: var(--step-1); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
+  .work { padding-top: var(--section-pad); }
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-3);
+  }
+  .work-card {
+    grid-column: span 3;
+    aspect-ratio: 3 / 4;
+    background: color-mix(in srgb, var(--ink) 5%, var(--bone));
+    border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+    padding: var(--space-2);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--space-1);
+    border-radius: var(--radius-card);
+  }
+  .work-card:hover { background: var(--ink); color: var(--bone); }
+  .work-title { font-family: var(--font-display); font-size: var(--step-0); font-weight: 600; }
+  .work-cat { font-size: var(--step--1); color: var(--crimson); text-transform: uppercase; letter-spacing: 0.1em; }
+  .work-card:hover .work-cat { color: var(--bone); }
+  @media (max-width: 768px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .work-card { grid-column: span 12; aspect-ratio: auto; }
+  }
+</style>

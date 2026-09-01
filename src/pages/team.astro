@@ -3,21 +3,74 @@ import Base from '../layouts/Base.astro';
 import { team } from '../data/team';
 import { t } from '../data/i18n/id';
 ---
-<Base title={`Team — ${t.site.name}`}>
-  <h1>{t.team.heading}</h1>
-  <ul>
-    {team.map((m) => (
-      <li>
-        <h2>{m.name}</h2>
-        <p>{m.roles.join('/')}</p>
-        <p>
-          Instagram: <a href={`https://instagram.com/${m.instagram}`} rel="noopener">@{m.instagram}</a>
-        </p>
-        {m.phones.length > 0 && <p>Phone: {m.phones.join(' / ')}</p>}
-        {m.experience.length > 0 && (
-          <p>{t.team.experienceLabel}: {m.experience.join(' / ')}</p>
-        )}
-      </li>
-    ))}
-  </ul>
+<Base title={`Team - ${t.site.name}`}>
+  <section class="team container">
+    <h1 class="reveal">{t.team.heading}</h1>
+    <div class="team-grid">
+      {team.map((m) => (
+        <article class={`member reveal hover-lift m-${m.id}`}>
+          <p class="member-role">{m.roles.join(' · ')}</p>
+          <h2 class="member-name">{m.name}</h2>
+          <dl class="member-meta">
+            <dt>{t.contact.instagramLabel}</dt>
+            <dd><a href={`https://instagram.com/${m.instagram}`} rel="noopener">@{m.instagram}</a></dd>
+            {m.phones.length > 0 && (
+              <>
+                <dt>{t.contact.phoneLabel}</dt>
+                <dd>{m.phones.join(' / ')}</dd>
+              </>
+            )}
+            {m.experience.length > 0 && (
+              <>
+                <dt>{t.team.experienceLabel}</dt>
+                <dd>{m.experience.join(' / ')}</dd>
+              </>
+            )}
+          </dl>
+        </article>
+      ))}
+    </div>
+  </section>
 </Base>
+
+<style>
+  .team { padding-top: var(--space-5); padding-bottom: var(--section-pad); }
+  h1 { font-size: var(--step-3); text-transform: uppercase; margin-bottom: var(--space-4); }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-3);
+  }
+  .member {
+    grid-column: span 3;
+    background: var(--bone);
+    border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+    padding: var(--space-3);
+    border-radius: var(--radius-card);
+    min-height: 18rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  /* asymmetric: members step in a 6/5/7/4 rhythm, not equal columns */
+  .m-hangga { grid-column: span 6; }
+  .m-zidny { grid-column: span 5; }
+  .m-luthfi { grid-column: span 7; }
+  .m-alfajrin { grid-column: span 4; }
+  .member-role {
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--crimson);
+  }
+  .member-name { font-size: var(--step-2); margin-top: var(--space-1); }
+  .member-meta { margin-top: var(--space-2); display: grid; gap: 0.4rem; }
+  .member-meta dt { font-size: var(--step--1); color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .member-meta dd { font-size: var(--step--1); }
+  .member-meta a { color: var(--crimson); }
+  .member:hover { background: var(--ink); color: var(--bone); border-color: var(--ink); }
+  .member:hover .member-role, .member:hover .member-meta a { color: var(--crimson-soft); }
+  @media (max-width: 768px) {
+    .member { grid-column: span 12; min-height: auto; }
+  }
+</style>
