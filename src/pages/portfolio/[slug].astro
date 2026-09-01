@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import { portfolio } from '../../data/portfolio';
 import { t } from '../../data/i18n/id';
+import { Image } from 'astro:assets';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths = (() =>
@@ -30,17 +31,16 @@ const metaParts = [item.meta?.date, item.meta?.location].filter(Boolean).join(' 
       </div>
     </header>
     <div class="detail-media">
-      {item.images.length === 0 ? (
-        <div class="placeholder hero-parallax">
-          <span>{t.portfolio.imagePlaceholder}</span>
-        </div>
-      ) : (
-        item.images.map((img) => (
-          <figure class="hover-lift">
-            <img src={img} alt={item.title} loading="lazy" />
-          </figure>
-        ))
-      )}
+      <figure class="hover-lift">
+        <Image
+          src={item.cover}
+          alt={item.title}
+          widths={[640, 1280, 1920]}
+          sizes="(max-width: 768px) 100vw, 70vw"
+          loading="lazy"
+          format="webp"
+        />
+      </figure>
     </div>
     <nav class="nextprev" aria-label="next prev">
       <a href={`/portfolio/${prev.slug}/`} class="np prev hover-lift">
