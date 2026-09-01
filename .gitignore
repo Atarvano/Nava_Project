@@ -1,0 +1,7 @@
+# agent scaffolding — local only, don't push
+CLAUDE.md
+AGENTS.md
+docs/agents/
+.scratch/
+CONTEXT.md
+CONTEXT-MAP.md
