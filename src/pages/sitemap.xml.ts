@@ -4,9 +4,12 @@ import { portfolio } from '../data/portfolio';
 const pages = ['', 'about', 'team', 'service', 'portfolio', 'contact'];
 
 export const GET: APIRoute = ({ site }) => {
+  const enPages = pages.map((p) => (p === '' ? 'en' : `en/${p}`));
   const urls = [
     ...pages.map((p) => new URL(`${p}`, site)),
+    ...enPages.map((p) => new URL(`${p}`, site)),
     ...portfolio.map((item) => new URL(`portfolio/${item.slug}/`, site)),
+    ...portfolio.map((item) => new URL(`en/portfolio/${item.slug}/`, site)),
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

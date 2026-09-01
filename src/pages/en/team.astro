@@ -1,10 +1,10 @@
 ---
-import Base from '../layouts/Base.astro';
-import { team } from '../data/team';
-import { resolveT } from '../utils/i18n';
-const t = resolveT('id');
+import Base from '../../layouts/Base.astro';
+import { team } from '../../data/team';
+import { resolveT } from '../../utils/i18n';
+const t = resolveT('en');
 ---
-<Base lang="id" title={`Team - ${t.site.name}`}>
+<Base lang="en" title={`Team - ${t.site.name}`}>
   <section class="team container">
     <h1 class="reveal">{t.team.heading}</h1>
     <div class="team-grid">

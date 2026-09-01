@@ -1,11 +1,11 @@
 ---
-import Base from '../layouts/Base.astro';
-import { contactChannels, contact } from '../data/contact';
-import { team } from '../data/team';
-import { resolveT } from '../utils/i18n';
-const t = resolveT('id');
+import Base from '../../layouts/Base.astro';
+import { contactChannels, contact } from '../../data/contact';
+import { team } from '../../data/team';
+import { resolveT } from '../../utils/i18n';
+const t = resolveT('en');
 ---
-<Base lang="id" title={`Contact - ${t.site.name}`}>
+<Base lang="en" title={`Contact - ${t.site.name}`}>
   <section class="contact container">
     <h1 class="reveal">{t.contact.heading}</h1>
     <div class="contact-grid">

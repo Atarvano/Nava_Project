@@ -1,13 +1,13 @@
 ---
-import Base from '../layouts/Base.astro';
-import { resolveT } from '../utils/i18n';
-import { services } from '../data/services';
-import { portfolio } from '../data/portfolio';
+import Base from '../../layouts/Base.astro';
+import { resolveT } from '../../utils/i18n';
+import { services } from '../../data/services';
+import { portfolio } from '../../data/portfolio';
 import { Image } from 'astro:assets';
-const t = resolveT('id');
+const t = resolveT('en');
 const [word1, word2] = t.site.name.toUpperCase().split(' ');
 ---
-<Base lang="id" title={`${t.site.name} - ${t.site.tagline}`}>
+<Base lang="en" title={`${t.site.name} - ${t.site.tagline}`}>
   <section class="hero">
     <div class="container">
       <div class="hero-grid">
@@ -24,7 +24,7 @@ const [word1, word2] = t.site.name.toUpperCase().split(' ');
     <h2 class="reveal">{t.service.heading}</h2>
     <div class="services-grid">
       {services.map((s) => (
-        <a href={`/portfolio?category=${s.id}`} class="service-card reveal hover-lift">
+        <a href={`/en/portfolio?category=${s.id}`} class="service-card reveal hover-lift">
           <span class="service-num">{s.number}</span>
           <span class="service-title">{s.title}</span>
         </a>

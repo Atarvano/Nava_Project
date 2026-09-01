@@ -1,17 +1,28 @@
 ---
 import { contactChannels } from '../data/contact';
-import { t } from '../data/i18n/id';
+import { resolveT } from '../utils/i18n';
+import { ogLocale, withLocale, type Locale } from '../i18n/index';
 import '../styles/global.css';
 
 interface Props {
   title: string;
   description?: string;
-  lang?: 'id' | 'en';
+  lang?: Locale;
   ogImage?: string;
 }
-const { title, description = `${t.site.name} - ${t.site.tagline}`, lang = 'id', ogImage } = Astro.props;
+const { title, description: rawDescription, lang = 'id', ogImage } = Astro.props;
+const t = resolveT(lang);
+const description = rawDescription ?? `${t.site.name} - ${t.site.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const locale = lang === 'id' ? 'id_ID' : 'en_US';
+const locale = ogLocale(lang);
+const toggleTo: Locale = lang === 'id' ? 'en' : 'id';
+const currentPath = Astro.url.pathname;
+const toggleHref = (() => {
+  if (lang === 'id') return withLocale(currentPath, 'en');
+  // lang === 'en': /en, /en/team, /en/portfolio/slug -> /, /team, /portfolio/slug
+  const stripped = currentPath.replace(/^\/en\/?/, '/');
+  return stripped === '' ? '/' : stripped;
+})();
 ---
 <!doctype html>
 <html lang={lang}>
@@ -38,15 +49,16 @@ const locale = lang === 'id' ? 'id_ID' : 'en_US';
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a href="/" class="brand">{t.site.name}</a>
+      <a href={withLocale('/', lang)} class="brand">{t.site.name}</a>
       <nav class="site-nav" aria-label="Primary">
         <ul>
-          <li><a href="/">{t.nav.home}</a></li>
-          <li><a href="/about">{t.nav.about}</a></li>
-          <li><a href="/team">{t.nav.team}</a></li>
-          <li><a href="/service">{t.nav.service}</a></li>
-          <li><a href="/portfolio">{t.nav.portfolio}</a></li>
-          <li><a href="/contact">{t.nav.contact}</a></li>
+          <li><a href={withLocale('/', lang)}>{t.nav.home}</a></li>
+          <li><a href={withLocale('/about', lang)}>{t.nav.about}</a></li>
+          <li><a href={withLocale('/team', lang)}>{t.nav.team}</a></li>
+          <li><a href={withLocale('/service', lang)}>{t.nav.service}</a></li>
+          <li><a href={withLocale('/portfolio', lang)}>{t.nav.portfolio}</a></li>
+          <li><a href={withLocale('/contact', lang)}>{t.nav.contact}</a></li>
+          <li><a class="lang-toggle" href={toggleHref} aria-label={`Switch to ${toggleTo.toUpperCase()}`}>{toggleTo.toUpperCase()}</a></li>
         </ul>
       </nav>
     </div>
@@ -68,7 +80,6 @@ const locale = lang === 'id' ? 'id_ID' : 'en_US';
   </footer>
   <script>
     // Scroll reveals - IntersectionObserver, GPU-safe (transform+opacity only).
-    // prefers-reduced-motion: skip, all .reveal become visible in CSS.
     const reveal = document.querySelectorAll('.reveal');
     if (reveal.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const io = new IntersectionObserver(
@@ -86,6 +97,23 @@ const locale = lang === 'id' ? 'id_ID' : 'en_US';
     } else {
       reveal.forEach((el) => el.classList.add('is-revealed'));
     }
+    // Persist lang toggle: remember last locale choice, offer redirect on mismatched ID default.
+    (() => {
+      try {
+        const KEY = 'nava-lang';
+        const hereLang = document.documentElement.lang as 'id'|'en';
+        const stored = localStorage.getItem(KEY) as 'id'|'en'|null;
+        localStorage.setItem(KEY, hereLang);
+        if (stored && stored !== hereLang) {
+          const path = location.pathname;
+          const isEn = path.startsWith('/en');
+          if (stored === 'en' && !isEn) {
+            const target = path === '/' ? '/en' : `/en${path}`;
+            if (target !== path) console.debug('[i18n] stored EN, current ID', { target });
+          }
+        }
+      } catch {}
+    })();
   </script>
 </body>
 </html>

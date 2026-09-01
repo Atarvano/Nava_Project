@@ -1,15 +1,15 @@
 ---
-import Base from '../../layouts/Base.astro';
-import { portfolio } from '../../data/portfolio';
-import { resolveT } from '../../utils/i18n';
+import Base from '../../../layouts/Base.astro';
+import { portfolio } from '../../../data/portfolio';
+import { resolveT } from '../../../utils/i18n';
 import { Image } from 'astro:assets';
-const _lang = 'id' as const;
-const t = resolveT(_lang);
+const _lang = 'en' as const;
+const t = resolveT('en' as const);
 
 const categories = [...new Set(portfolio.map((p) => p.category))].sort();
 const breakpoints = [320, 640, 960, 1280];
 ---
-<Base lang="id" title={`${t.portfolio.indexHeading} - ${t.site.name}`}>
+<Base lang="en" title={`${t.portfolio.indexHeading} - ${t.site.name}`}>
   <section class="portfolio container">
     <h1 class="reveal">{t.portfolio.indexHeading}</h1>
     <nav class="filter" aria-label="filter by category">

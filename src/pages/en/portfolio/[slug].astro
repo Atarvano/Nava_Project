@@ -1,12 +1,12 @@
 ---
-import Base from '../../layouts/Base.astro';
-import { portfolio } from '../../data/portfolio';
-import { resolveT } from '../../utils/i18n';
+import Base from '../../../layouts/Base.astro';
+import { portfolio } from '../../../data/portfolio';
+import { resolveT } from '../../../utils/i18n';
 import { Image } from 'astro:assets';
 import type { GetStaticPaths } from 'astro';
 
-const _lang = 'id' as const;
-const t = resolveT(_lang);
+const _lang = 'en' as const;
+const t = resolveT('en' as const);
 
 export const getStaticPaths = (() =>
   portfolio.map((item, i) => ({
@@ -22,7 +22,7 @@ const { item, prev, next } = Astro.props;
 const metaParts = [item.meta?.date, item.meta?.location].filter(Boolean).join(' · ');
 const ogImage = new URL(item.cover.src, Astro.site).href;
 ---
-<Base lang="id" title={`${item.title} - ${t.site.name}`} ogImage={ogImage} description={`${item.tags[0] ?? item.category} - ${item.title}`}>
+<Base lang="en" title={`${item.title} - ${t.site.name}`} ogImage={ogImage} description={`${item.tags[0] ?? item.category} - ${item.title}`}>
   <article class="detail container">
     <header class="detail-head">
       <div class="detail-grid">
@@ -47,11 +47,11 @@ const ogImage = new URL(item.cover.src, Astro.site).href;
       </figure>
     </div>
     <nav class="nextprev" aria-label="next prev">
-      <a href={`/portfolio/${prev.slug}/`} class="np prev hover-lift">
+      <a href={`/en/portfolio/${prev.slug}/`} class="np prev hover-lift">
         <span class="np-label">{t.portfolio.prev}</span>
         <span class="np-title">{prev.title}</span>
       </a>
-      <a href={`/portfolio/${next.slug}/`} class="np next hover-lift">
+      <a href={`/en/portfolio/${next.slug}/`} class="np next hover-lift">
         <span class="np-label">{t.portfolio.next}</span>
         <span class="np-title">{next.title}</span>
       </a>

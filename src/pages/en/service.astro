@@ -1,16 +1,16 @@
 ---
-import Base from '../layouts/Base.astro';
-import { services } from '../data/services';
-import { resolveT } from '../utils/i18n';
-const t = resolveT('id');
+import Base from '../../layouts/Base.astro';
+import { services } from '../../data/services';
+import { resolveT } from '../../utils/i18n';
+const t = resolveT('en');
 ---
-<Base lang="id" title={`Service - ${t.site.name}`}>
+<Base lang="en" title={`Service - ${t.site.name}`}>
   <section class="service container">
     <h1 class="reveal">{t.service.heading}</h1>
     <ol class="service-list">
       {services.map((s, i) => (
         <li class="reveal">
-          <a href={`/portfolio?category=${s.id}`} class="service-row hover-lift">
+          <a href={`/en/portfolio?category=${s.id}`} class="service-row hover-lift">
             <span class="num" aria-hidden="true">{s.number}</span>
             <span class="label">{s.title}</span>
             <span class="arrow" aria-hidden="true">↗</span>
